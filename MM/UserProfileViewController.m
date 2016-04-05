@@ -9,6 +9,13 @@
 #import "UserProfileViewController.h"
 
 @interface UserProfileViewController ()
+@property (weak, nonatomic) IBOutlet UIImageView *userProfileImage;
+@property (weak, nonatomic) IBOutlet UILabel *displayNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dobLabel;
+@property (weak, nonatomic) IBOutlet UILabel *introLabel;
+@property (weak, nonatomic) IBOutlet UILabel *driverStatusLabel;
+@property (weak, nonatomic) IBOutlet UIButton *acceptButton;
+@property (weak, nonatomic) IBOutlet UIButton *declineButton;
 
 @end
 
@@ -33,5 +40,9 @@
     // Pass the selected object to the new view controller.
 }
 */
+- (IBAction)acceptButtonPressed:(id)sender {
+}
+- (IBAction)declineButtonPressed:(id)sender {
+}
 
 @end

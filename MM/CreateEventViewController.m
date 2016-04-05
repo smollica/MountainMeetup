@@ -10,6 +10,9 @@
 
 @interface CreateEventViewController ()
 
+@property (weak, nonatomic) IBOutlet UIImageView *eventImageView;
+@property (weak, nonatomic) IBOutlet UIDatePicker *eventDatePicker;
+
 @end
 
 @implementation CreateEventViewController
@@ -33,5 +36,8 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (IBAction)createEventButton:(id)sender {
+}
 
 @end

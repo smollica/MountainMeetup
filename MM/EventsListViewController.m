@@ -7,8 +7,13 @@
 //
 
 #import "EventsListViewController.h"
+@import MapKit;
 
 @interface EventsListViewController ()
+
+@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 

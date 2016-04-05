@@ -7,6 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import <Parse/Parse.h>
+#import "User.h"
+#import "Event.h"
+#import "Request.h"
 
 @interface AppDelegate ()
 
@@ -16,7 +20,17 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    [Parse initializeWithConfiguration:[ParseClientConfiguration configurationWithBlock:^(id<ParseMutableClientConfiguration> configuration) {
+        configuration.applicationId = @"Lq25p1eLSLdnBa0APu5KGIHQ49Z5oh9WgFt1OlRj";
+        configuration.clientKey = @"1m76Gbfii3QE0fJwRnEVLBHI8y3e0qq4IFP0ssYo";
+        //configuration.server = @"http://YOUR_PARSE_SERVER:1337/parse";
+    }]];
+    
+    [Event registerSubclass];
+    [User registerSubclass];
+    [Request registerSubclass];
+    
     return YES;
 }
 

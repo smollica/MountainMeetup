@@ -10,6 +10,10 @@
 
 @interface MyEventViewController ()
 
+@property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
+@property (weak, nonatomic) IBOutlet UICollectionView *confirmedCollectionView;
+@property (weak, nonatomic) IBOutlet UICollectionView *requestsCollectionView;
+
 @end
 
 @implementation MyEventViewController

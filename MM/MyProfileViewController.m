@@ -10,6 +10,13 @@
 
 @interface MyProfileViewController ()
 
+@property (weak, nonatomic) IBOutlet UIImageView *userProfileImage;
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *displayNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dobLabel;
+@property (weak, nonatomic) IBOutlet UILabel *introLabel;
+@property (weak, nonatomic) IBOutlet UILabel *drivingLabel;
+
 @end
 
 @implementation MyProfileViewController
@@ -33,5 +40,7 @@
     // Pass the selected object to the new view controller.
 }
 */
+- (IBAction)editButtonPressed:(id)sender {
+}
 
 @end

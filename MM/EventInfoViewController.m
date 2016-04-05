@@ -10,6 +10,9 @@
 
 @interface EventInfoViewController ()
 
+@property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
+@property (weak, nonatomic) IBOutlet UICollectionView *membersCollectionView;
+
 @end
 
 @implementation EventInfoViewController
