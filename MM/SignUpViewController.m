@@ -7,6 +7,7 @@
 //
 
 #import "SignUpViewController.h"
+#import "EventsListViewController.h"
 #import "User.h"
 
 @interface SignUpViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>
@@ -19,7 +20,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *introTextField;
 @property (weak, nonatomic) IBOutlet UIDatePicker *dobDatePicker;
 @property (weak, nonatomic) IBOutlet UISwitch *isDrivingSwitch;
-
+@property (nonatomic) User *user;
 
 @end
 
@@ -126,11 +127,43 @@
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (error) {
             NSLog(@"Error: %@", error.localizedDescription);
+            [self createProfileAlert:(error.localizedDescription)];
         } else {
-            // segue
+            NSLog(@"saved");
+            self.user = newUser;
+            //[self performSegueWithIdentifier:@"createProfileSegue" sender:self];
         }
     }];
+}
+
+#pragma mark - Alert
+
+-(void)createProfileAlert:(NSString*)error {
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:@"Invalid Profile Information"
+                                  message:error
+                                  preferredStyle:UIAlertControllerStyleAlert];
     
+    UIAlertAction *ok = [UIAlertAction
+                             actionWithTitle:@"OK"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [alert dismissViewControllerAnimated:YES completion:nil];
+                             }];
+    
+    [alert addAction:ok];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+#pragma mark - Segue
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([segue.identifier isEqualToString:@"createProfileSegue"]) {
+        EventsListViewController *vc = segue.destinationViewController;
+        vc.user = self.user;
+    }
 }
 
 #pragma mark - UITextFieldDelegate

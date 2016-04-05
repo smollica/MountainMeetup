@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Event.h"
 
 @interface EventInfoViewController : UIViewController
+
+@property (nonatomic) Event *event;
 
 @end

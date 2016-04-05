@@ -16,6 +16,7 @@
 @dynamic image;
 @dynamic date;
 @dynamic location;
+@dynamic distance;
 @dynamic members;
 @dynamic requests;
 
