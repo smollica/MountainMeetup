@@ -28,7 +28,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.userImageView.backgroundColor = [UIColor grayColor];
     self.userImageView.userInteractionEnabled = YES;
     
     self.usernameTextField.delegate = self;
@@ -135,6 +134,10 @@
     }];
 }
 
+- (IBAction)backButtonPressed:(id)sender {
+    [self performSegueWithIdentifier:@"unwindToHome" sender:self];
+}
+
 #pragma mark - Alert
 
 -(void)createProfileAlert:(NSString*)error {
@@ -157,6 +160,10 @@
 }
 
 #pragma mark - Segue
+
+-(IBAction)unwindFromSignUp:(UIStoryboardSegue *)unwindSegue {
+    [self performSegueWithIdentifier:@"unwindToHome" sender:self];
+}
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if([segue.identifier isEqualToString:@"createProfileSegue"]) {

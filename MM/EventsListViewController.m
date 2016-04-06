@@ -14,13 +14,13 @@
 #import <CoreLocation/CoreLocation.h>
 #import <Parse/Parse.h>
 
-@interface EventsListViewController () <CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+@interface EventsListViewController () <CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchBarDelegate>
 @property (nonatomic) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLLocation *lastLocation;
 @property (nonatomic) BOOL didInputLocation;
 @property (nonatomic) NSString *currentPostalCode;
 @property (nonatomic) NSMutableArray *localEvents;
-@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchTextField;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic) User *user;
@@ -31,6 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     
     self.user = (User*)[PFUser currentUser];
     
@@ -49,7 +50,7 @@
 
 #pragma mark - Actions (buttons)
 
-- (IBAction)searchButtonPressed:(id)sender {
+- (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     self.didInputLocation = YES;
     self.currentPostalCode = self.searchTextField.text;
     [self.locationManager stopUpdatingLocation];
