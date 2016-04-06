@@ -93,16 +93,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TtH-85-eev">
-                                                    <rect key="frame" x="120" y="14" width="80.5" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n69-dy-X9v">
                                                     <rect key="frame" x="262" y="17" width="49.5" height="14.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.37900758429999998" green="0.75021636800000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qfm-EV-mhw">
@@ -111,6 +105,12 @@
                                                         <constraint firstAttribute="width" secondItem="qfm-EV-mhw" secondAttribute="height" multiplier="1:1" id="xx3-VC-M5z"/>
                                                     </constraints>
                                                 </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EVENT TITLE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TtH-85-eev">
+                                                    <rect key="frame" x="109.5" y="14" width="101.5" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.37900758429999998" green="0.75021636800000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="qfm-EV-mhw" firstAttribute="leading" secondItem="sMc-fz-WD6" secondAttribute="leading" id="1Aa-PG-Dwj"/>
@@ -434,7 +434,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SIGN UP AS A DRIVER!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KdG-l0-Bk1">
-                                <rect key="frame" x="16" y="493" width="157" height="21"/>
+                                <rect key="frame" x="16" y="493" width="157" height="18"/>
                                 <color key="tintColor" red="0.73352407109999995" green="0.95875088460000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.0" green="0.71632457314133546" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -448,7 +448,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VhS-Ch-XCw">
-                                <rect key="frame" x="101" y="538" width="119" height="30"/>
+                                <rect key="frame" x="101" y="528" width="119" height="30"/>
+                                <color key="backgroundColor" red="0.86995106669659927" green="1" blue="0.98919807846125818" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="CREATE PROFILE">
                                     <color key="titleColor" red="0.0" green="0.71632457309999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -476,7 +477,7 @@
                                 </date>
                             </datePicker>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f2p-z9-XJS">
-                                <rect key="frame" x="255" y="488" width="51" height="31"/>
+                                <rect key="frame" x="255" y="486.5" width="51" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="49" id="WwZ-bC-jcK"/>
                                     <constraint firstAttribute="height" constant="31" id="qrc-VT-e0o"/>
@@ -501,7 +502,7 @@
                             <constraint firstItem="TwC-UB-U7i" firstAttribute="leading" secondItem="Xaz-Er-bbT" secondAttribute="leadingMargin" id="QE0-iD-UJg"/>
                             <constraint firstItem="tNA-lW-njk" firstAttribute="top" secondItem="qD1-Xe-aAE" secondAttribute="bottom" constant="25" id="UZq-Fb-rub"/>
                             <constraint firstItem="UDD-D7-BF5" firstAttribute="leading" secondItem="qD1-Xe-aAE" secondAttribute="leading" id="Wgw-8j-GVX"/>
-                            <constraint firstItem="GAd-Bm-mcg" firstAttribute="top" secondItem="VhS-Ch-XCw" secondAttribute="bottom" id="Yke-4D-md9"/>
+                            <constraint firstItem="GAd-Bm-mcg" firstAttribute="top" secondItem="VhS-Ch-XCw" secondAttribute="bottom" constant="10" id="Yke-4D-md9"/>
                             <constraint firstItem="WkL-b0-JeM" firstAttribute="leading" secondItem="Xaz-Er-bbT" secondAttribute="leadingMargin" id="aMI-I3-Gze"/>
                             <constraint firstItem="qD1-Xe-aAE" firstAttribute="leading" secondItem="Auz-kk-BHc" secondAttribute="trailing" constant="14" id="ac3-LO-emf"/>
                             <constraint firstItem="UDD-D7-BF5" firstAttribute="top" secondItem="tNA-lW-njk" secondAttribute="bottom" constant="25" id="b3A-an-6iP"/>
@@ -520,6 +521,11 @@
                             <constraint firstItem="N0s-3o-PTP" firstAttribute="centerX" secondItem="Xaz-Er-bbT" secondAttribute="centerX" id="wAM-rn-aUC"/>
                             <constraint firstItem="WkL-b0-JeM" firstAttribute="trailing" secondItem="Xaz-Er-bbT" secondAttribute="trailingMargin" id="yYn-Ks-QQp"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="uLh-lp-b8t"/>
+                            </mask>
+                        </variation>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
