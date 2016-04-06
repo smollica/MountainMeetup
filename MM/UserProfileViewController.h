@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "User.h"
+#import "Event.h"
 
 @interface UserProfileViewController : UIViewController
+
+@property (nonatomic) User *user;
+@property (nonatomic) Event *event;
 
 @end

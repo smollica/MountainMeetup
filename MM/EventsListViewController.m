@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic) User *user;
 
 @end
 
@@ -30,6 +31,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.user = (User*)[PFUser currentUser];
     
     self.searchTextField.delegate = self;
     
@@ -43,6 +46,32 @@
     [self getCurrentLocation];
 
 }
+
+#pragma mark - Actions (buttons)
+
+- (IBAction)searchButtonPressed:(id)sender {
+    self.didInputLocation = YES;
+    self.currentPostalCode = self.searchTextField.text;
+    [self.locationManager stopUpdatingLocation];
+    
+    CLGeocoder *geo = [[CLGeocoder alloc] init];
+    
+    [geo geocodeAddressString:self.searchTextField.text completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+        self.lastLocation = placemarks[0].location;
+    }];
+    
+    PFGeoPoint *geoPoint = [PFGeoPoint new];
+    geoPoint.latitude = self.lastLocation.coordinate.latitude;
+    geoPoint.longitude = self.lastLocation.coordinate.longitude;
+    
+    [self fetchData:geoPoint];
+    
+    MKPointAnnotation *inputLocation = [[MKPointAnnotation alloc] init];
+    inputLocation.coordinate = self.lastLocation.coordinate;
+    [self.mapView addAnnotation:inputLocation];
+    
+}
+
 
 #pragma mark - CLLocationManagerDelegate
 
@@ -66,10 +95,7 @@
             
             [geo reverseGeocodeLocation:currentLocation completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
                 
-                CLPlacemark *place = [placemarks objectAtIndex:0];
-                self.currentPostalCode = place.postalCode;
-                
-                [self fetchData];
+                [self fetchData:self.user.location];
                 
             }];
         }
@@ -78,10 +104,10 @@
     self.lastLocation = currentLocation;
 }
 
-- (void)fetchData {
+- (void)fetchData:(PFGeoPoint*)searchLocation {
     PFQuery *query = [PFQuery queryWithClassName:@"Event"];
     if(self.user.location != nil) {
-        [query whereKey:@"location" nearGeoPoint:self.user.location];
+        [query whereKey:@"location" nearGeoPoint:searchLocation];
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             for (Event *event in objects) {
                 if(self.user.location != nil) {
@@ -90,9 +116,14 @@
                 }
             }
             [self.tableView reloadData];
+            
+            MKCoordinateSpan span = MKCoordinateSpanMake(0.05, 0.05);
+            MKCoordinateRegion region = MKCoordinateRegionMake(self.lastLocation.coordinate, span);
+            [self.mapView setRegion:region animated:YES];
+            
         }];
     } else {
-        [self fetchData];
+        [self fetchData:searchLocation];
     }
 }
 

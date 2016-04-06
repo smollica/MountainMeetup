@@ -7,7 +7,6 @@
 //
 
 #import "SignUpViewController.h"
-#import "EventsListViewController.h"
 #import "User.h"
 
 @interface SignUpViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>
@@ -131,7 +130,7 @@
         } else {
             NSLog(@"saved");
             self.user = newUser;
-            //[self performSegueWithIdentifier:@"createProfileSegue" sender:self];
+            [self performSegueWithIdentifier:@"createProfileSegue" sender:self];
         }
     }];
 }
@@ -161,8 +160,7 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if([segue.identifier isEqualToString:@"createProfileSegue"]) {
-        EventsListViewController *vc = segue.destinationViewController;
-        vc.user = self.user;
+        //
     }
 }
 

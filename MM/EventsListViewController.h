@@ -11,6 +11,4 @@
 
 @interface EventsListViewController : UIViewController
 
-@property (nonatomic) User *user;
-
 @end

@@ -8,9 +8,11 @@
 
 #import "MyEventViewController.h"
 #import "UsersCollectionViewCell.h"
+#import "UserProfileViewController.h"
 #import <Parse/Parse.h>
 #import "User.h"
 #import "Event.h"
+#import "Request.h"
 
 @interface MyEventViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -32,14 +34,20 @@
     self.user = (User*)[PFUser currentUser];
     self.event = self.user.myEvent;
     
-    for (User *user in self.event.members) {
-        [self.members addObject:user];
-    }
+    if(self.event == nil) {
+        
+        self.eventTitleLabel.text = @"Not a Member of Any Events";
+        
+    } else {
     
-    for (User *user in self.event.requests) {
-        [self.requests addObject:user];
+        for (User *user in self.event.members) {
+            [self.members addObject:user];
+        }
+        
+        for (User *user in self.event.requests) {
+            [self.requests addObject:user];
+        }
     }
-    
 }
 
 
@@ -77,6 +85,26 @@
             
             return cell;
         }
+}
+
+#pragma mark - Segue
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([segue.identifier isEqualToString:@"showUserProfile"]) {
+        if(sender == self.confirmedCollectionView) {
+            NSIndexPath *indexPath = [[self.confirmedCollectionView indexPathsForSelectedItems] firstObject];
+            UserProfileViewController *vc = segue.destinationViewController;
+            vc.user = self.members[indexPath.row];
+            vc.event = self.event;
+        } else {
+            NSIndexPath *indexPath = [[self.requestsCollectionView indexPathsForSelectedItems] firstObject];
+            UserProfileViewController *vc = segue.destinationViewController;
+            Request *request = self.requests[indexPath.row];
+            vc.user = request.creator;
+            vc.event = self.event;
+        }
+ 
+    }
 }
 
 @end

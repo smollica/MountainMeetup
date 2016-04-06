@@ -7,8 +7,11 @@
 //
 
 #import "HomeViewController.h"
+#import "User.h"
 
 @interface HomeViewController ()
+
+@property (nonatomic) User *user;
 
 @end
 
@@ -17,6 +20,96 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+}
+
+
+#pragma mark - Actions (buttons)
+
+
+- (IBAction)signInButtonPressed:(id)sender {
+    UIAlertController *alert = [UIAlertController
+                                          alertControllerWithTitle:@"Please Log In"
+                                          message:@""
+                                          preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
+     {
+         textField.placeholder = @"Username";
+     }];
+    
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
+     {
+         textField.placeholder = @"Password";
+         textField.secureTextEntry = YES;
+     }];
+    
+    UIAlertAction *login = [UIAlertAction
+                            actionWithTitle:@"Log In"
+                               style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action)
+                               {
+                                   UITextField *username = alert.textFields.firstObject;
+                                   UITextField *password = alert.textFields.lastObject;
+                                   
+                                   [PFUser logInWithUsernameInBackground:username.text
+                                                                password:password.text
+                                                                   block:^(PFUser *user, NSError *error)
+                                    {
+                                        if(!error) {
+                                            NSLog(@"Login Successful.");
+                                            [self performSegueWithIdentifier:@"signInSegue" sender:self];
+                                        } else {
+                                            NSLog(@"Error");
+                                            [alert dismissViewControllerAnimated:YES completion:nil];
+                                            [self invalidLogin:(error.localizedDescription)];
+                                        }
+                                    }];
+                                   
+                                   if(alert) {
+                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                   }
+                               }];
+    
+    UIAlertAction* cancel = [UIAlertAction
+                             actionWithTitle:@"Cancel"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [alert dismissViewControllerAnimated:YES completion:nil];
+                             }];
+    
+    [alert addAction:login];
+    [alert addAction:cancel];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)invalidLogin:(NSString*)error {
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:@"Invalid Login"
+                                  message:error
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *ok = [UIAlertAction
+                         actionWithTitle:@"OK"
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [alert dismissViewControllerAnimated:YES completion:nil];
+                         }];
+    
+    [alert addAction:ok];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+    
+}
+
+#pragma mark - Segue
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([segue.identifier isEqualToString:@"signInSegue"]) {
+        //
+    }
 }
 
 @end
