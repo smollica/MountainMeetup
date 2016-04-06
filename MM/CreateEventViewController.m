@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *destinationTextField;
 @property (weak, nonatomic) IBOutlet UIDatePicker *eventDatePicker;
 @property (weak, nonatomic) IBOutlet UITextField *eventDescriptionTextField;
+@property (weak, nonatomic) IBOutlet UIButton *createEventButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic) User *user;
 
 @end
@@ -35,6 +37,13 @@
     self.eventDescriptionTextField.delegate = self;
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    self.createEventButton.alpha = 1.0;
+    self.createEventButton.userInteractionEnabled = YES;
+    
+    self.loadingIndicator.alpha = 0.0;
+    [self.loadingIndicator stopAnimating];
+}
 
 #pragma mark - UIImagePickerControllerDelegate
 
@@ -126,6 +135,14 @@
             NSLog(@"saved");
             self.user.myEvent = newEvent;
             [self createEventAlert];
+            
+            self.createEventButton.alpha = 0.0;
+            self.createEventButton.userInteractionEnabled = NO;
+            
+            self.loadingIndicator.alpha = 1.0;
+            [self.loadingIndicator startAnimating];
+            
+            [self performSelector:@selector(viewDidAppear:) withObject:self afterDelay:3.0];
 //            [self performSegueWithIdentifier:@"createEventSegue" sender:self];
         }
     }];

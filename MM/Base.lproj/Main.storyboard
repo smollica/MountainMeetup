@@ -915,6 +915,9 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Ewd-5I-6sc">
+                                <rect key="frame" x="150" y="485" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.65098039215686276" green="0.81568627450980391" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -927,12 +930,14 @@
                             <constraint firstAttribute="trailingMargin" secondItem="yoI-9O-X08" secondAttribute="trailing" constant="20" id="Ghu-rL-hDP"/>
                             <constraint firstItem="yoI-9O-X08" firstAttribute="top" secondItem="UbQ-Sj-gff" secondAttribute="bottom" constant="20" id="OdI-0M-sJz"/>
                             <constraint firstAttribute="trailingMargin" secondItem="3ra-Ye-GyW" secondAttribute="trailing" id="Ulv-cE-0rr"/>
+                            <constraint firstItem="Ewd-5I-6sc" firstAttribute="top" secondItem="YuG-aE-UJB" secondAttribute="bottom" constant="15" id="Yea-2k-1uy"/>
                             <constraint firstItem="yoI-9O-X08" firstAttribute="leading" secondItem="AGh-NY-tZQ" secondAttribute="leadingMargin" constant="20" id="ayD-NB-AH7"/>
                             <constraint firstItem="UbQ-Sj-gff" firstAttribute="leading" secondItem="AGh-NY-tZQ" secondAttribute="leadingMargin" constant="20" id="cRd-L8-kUT"/>
                             <constraint firstItem="3ra-Ye-GyW" firstAttribute="top" secondItem="yoI-9O-X08" secondAttribute="bottom" constant="20" id="f7T-pe-0mO"/>
                             <constraint firstItem="Za9-dP-o15" firstAttribute="top" secondItem="YuG-aE-UJB" secondAttribute="bottom" constant="10" id="hmn-Dv-5cX"/>
                             <constraint firstAttribute="trailingMargin" secondItem="YuG-aE-UJB" secondAttribute="trailing" id="i5T-iH-ldE"/>
                             <constraint firstAttribute="trailing" secondItem="b8r-2u-iGp" secondAttribute="trailing" id="iY8-if-pCR"/>
+                            <constraint firstItem="Ewd-5I-6sc" firstAttribute="centerX" secondItem="AGh-NY-tZQ" secondAttribute="centerX" id="kiH-aR-LaW"/>
                             <constraint firstAttribute="trailingMargin" secondItem="UbQ-Sj-gff" secondAttribute="trailing" constant="20" id="n3I-Nf-Ozo"/>
                             <constraint firstItem="b8r-2u-iGp" firstAttribute="top" secondItem="hvT-ah-2R4" secondAttribute="bottom" id="zPn-1P-WEW"/>
                             <constraint firstItem="UbQ-Sj-gff" firstAttribute="top" secondItem="b8r-2u-iGp" secondAttribute="bottom" constant="20" id="zpc-Of-W2x"/>
@@ -946,11 +951,13 @@
                     <tabBarItem key="tabBarItem" title="Item" id="2dH-J0-uT9"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="createEventButton" destination="Za9-dP-o15" id="qFK-d2-VRe"/>
                         <outlet property="destinationTextField" destination="yoI-9O-X08" id="EkI-OK-wGW"/>
                         <outlet property="eventDatePicker" destination="3ra-Ye-GyW" id="fue-l1-i7R"/>
                         <outlet property="eventDescriptionTextField" destination="YuG-aE-UJB" id="ou8-K7-Nzr"/>
                         <outlet property="eventImageView" destination="b8r-2u-iGp" id="THm-gf-ab3"/>
                         <outlet property="eventTitleTextField" destination="UbQ-Sj-gff" id="m5n-D3-ar5"/>
+                        <outlet property="loadingIndicator" destination="Ewd-5I-6sc" id="SDp-Ej-tZl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IK3-Cf-uBN" userLabel="First Responder" sceneMemberID="firstResponder"/>
