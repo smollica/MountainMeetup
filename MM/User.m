@@ -16,5 +16,6 @@
 @dynamic dob;
 @dynamic isDriving;
 @dynamic location;
+@dynamic myEvent;
 
 @end

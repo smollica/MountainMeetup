@@ -7,11 +7,14 @@
 //
 
 #import "EventInfoViewController.h"
+#import "UsersCollectionViewCell.h"
+#import "User.h"
 
-@interface EventInfoViewController ()
+@interface EventInfoViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *membersCollectionView;
+@property (nonatomic) NSMutableArray *members;
 
 @end
 
@@ -19,7 +22,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    for (User *user in self.event.members) {
+        [self.members addObject:user];
+    }
+    
+}
+
+#pragma mark - UICollectionViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.event.members.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UsersCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"userCell" forIndexPath:indexPath];
+    
+    User *user = [self.members objectAtIndex:indexPath.item];
+    
+    //cell.UserPFImageView = user.image;
+    //cell.displayNameLabel.text = user.displayName;
+    
+    return cell;
 }
 
 @end
