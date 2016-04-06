@@ -166,13 +166,37 @@
     
     Event *event = [self.localEvents objectAtIndex:indexPath.row];
     
-    //cell.eventLabel =  event.title
-    //cell.eventImageView = event.image;
-    //cell.distanceLabel.text = event.distance;
+    [self getImageFor:event block:^(UIImage *image) {
+        cell.eventImageView.image = image;
+    }];
+    
+    cell.eventTitleLabel.text =  event.title;
+    cell.eventDistanceLabel.text = [NSString stringWithFormat:@"%0.2f km", event.distance];
     
     return cell;
 }
 
+- (void)getImageFor:(Event*)event block:(void (^)(UIImage *image))completionBlock{
+    PFQuery *query = [Event query];
+    
+    [query whereKey:@"title" equalTo:event.title];
+    
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        if (!object) {
+            return NSLog(@"No Object and %@", error);
+        }
+        
+        PFFile *imageFile = object[@"image"];
+        
+        [imageFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+            if (!data) {
+                return NSLog(@"No Image File and %@", error);
+            }
+            
+            completionBlock([UIImage imageWithData:data]);
+        }];
+    }];
+}
 
 #pragma mark - Segue
 

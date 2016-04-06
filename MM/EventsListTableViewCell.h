@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface EventsListTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIImageView *eventImageView;
+@property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *eventDistanceLabel;
 
 @end

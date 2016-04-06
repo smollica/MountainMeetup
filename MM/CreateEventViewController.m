@@ -112,32 +112,54 @@
         newEvent.image = imageFile;
     }
     
-    
     newEvent.title = self.eventTitleTextField.text;
     newEvent.summary = self.eventDescriptionTextField.text;
     newEvent.date = self.eventDatePicker.date;
     newEvent.leader = self.user;
-    self.user.myEvent = newEvent;
-    [newEvent.members addObject:self.user];
+    newEvent.location = self.user.location;
+//    [newEvent.members addObject:self.user];
     
     [newEvent saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (error) {
             NSLog(@"Error: %@", error.localizedDescription);
         } else {
             NSLog(@"saved");
-            [self performSegueWithIdentifier:@"createEventSegue" sender:self];
+            self.user.myEvent = newEvent;
+            [self createEventAlert];
+//            [self performSegueWithIdentifier:@"createEventSegue" sender:self];
         }
     }];
 }
 
+#pragma mark - Alert
+
+-(void)createEventAlert {
+
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:@"Event Created!"
+                                  message:@"congratulations"
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *ok = [UIAlertAction
+                         actionWithTitle:@"OK"
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [alert dismissViewControllerAnimated:YES completion:nil];
+                         }];
+    
+    [alert addAction:ok];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
 
 #pragma mark - Segue
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if([segue.identifier isEqualToString:@"createEventSegue"]) {
-        //EventsListViewController *vc = segue.destinationViewController;
-        //vc.user = self.user;
-    }
+//    if([segue.identifier isEqualToString:@"createEventSegue"]) {
+//        EventsListViewController *vc = segue.destinationViewController;
+//        vc.user = self.user;
+//    }
 }
 
 #pragma mark - UITextFieldDelegate

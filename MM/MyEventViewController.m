@@ -69,8 +69,11 @@
             
             User *user = [self.members objectAtIndex:indexPath.item];
             
-            //cell.UserPFImageView = user.image;
-            //cell.displayNameLabel.text = user.displayName;
+            [self getImageFor:user block:^(UIImage *image) {
+                cell.userImageView.image = image;
+            }];
+            
+            cell.displayNameLabel.text = user.displayName;
             
             return cell;
             
@@ -80,11 +83,36 @@
             
             User *user = [self.requests objectAtIndex:indexPath.item];
             
-            //cell.UserPFImageView = user.image;
-            //cell.displayNameLabel.text = user.displayName;
+            [self getImageFor:user block:^(UIImage *image) {
+                cell.userImageView.image = image;
+            }];
+            
+            cell.displayNameLabel.text = user.displayName;
             
             return cell;
         }
+}
+
+- (void)getImageFor:(User*)user block:(void (^)(UIImage *image))completionBlock{
+    PFQuery *query = [User query];
+    
+    [query whereKey:@"username" equalTo:user.username];
+    
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        if (!object) {
+            return NSLog(@"No Object and %@", error);
+        }
+        
+        PFFile *imageFile = object[@"image"];
+        
+        [imageFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+            if (!data) {
+                return NSLog(@"No Image File and %@", error);
+            }
+            
+            completionBlock([UIImage imageWithData:data]);
+        }];
+    }];
 }
 
 #pragma mark - Segue
