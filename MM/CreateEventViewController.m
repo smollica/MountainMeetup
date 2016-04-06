@@ -12,7 +12,11 @@
 @interface CreateEventViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *eventImageView;
+@property (weak, nonatomic) IBOutlet UITextField *eventTitleTextField;
+@property (weak, nonatomic) IBOutlet UITextField *destinationTextField;
 @property (weak, nonatomic) IBOutlet UIDatePicker *eventDatePicker;
+@property (weak, nonatomic) IBOutlet UITextField *eventDescriptionTextField;
+@property (nonatomic) User *user;
 
 @end
 
@@ -21,11 +25,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.user = (User*)[PFUser currentUser];
+    
     self.eventImageView.backgroundColor = [UIColor grayColor];
     self.eventImageView.userInteractionEnabled = YES;
     
-    //self.usernameTextField.delegate = self;
-    //self.passwordTextField.delegate = self;
+    self.eventTitleTextField.delegate = self;
+    self.destinationTextField.delegate = self;
+    self.eventDescriptionTextField.delegate = self;
 }
 
 
@@ -105,14 +112,20 @@
         newEvent.image = imageFile;
     }
     
+    
+    newEvent.title = self.eventTitleTextField.text;
+    newEvent.summary = self.eventDescriptionTextField.text;
     newEvent.date = self.eventDatePicker.date;
+    newEvent.leader = self.user;
+    self.user.myEvent = newEvent;
+    [newEvent.members addObject:self.user];
     
     [newEvent saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (error) {
             NSLog(@"Error: %@", error.localizedDescription);
         } else {
             NSLog(@"saved");
-            //[self performSegueWithIdentifier:@"createEventSegue" sender:self];
+            [self performSegueWithIdentifier:@"createEventSegue" sender:self];
         }
     }];
 }

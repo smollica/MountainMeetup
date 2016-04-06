@@ -11,6 +11,4 @@
 
 @interface CreateEventViewController : UIViewController
 
-@property (nonatomic) User *user;
-
 @end

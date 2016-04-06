@@ -8,6 +8,7 @@
 
 #import "EventInfoViewController.h"
 #import "UsersCollectionViewCell.h"
+#import "UserProfileViewController.h"
 #import "User.h"
 
 @interface EventInfoViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
@@ -15,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *membersCollectionView;
 @property (nonatomic) NSMutableArray *members;
+@property(nonatomic) User *user;
 
 @end
 
@@ -23,9 +25,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.user = (User*)[PFUser currentUser];
+    
     for (User *user in self.event.members) {
         [self.members addObject:user];
     }
+    
+    self.eventTitleLabel.text = self.event.title;
+    //add other info
     
 }
 
@@ -45,6 +52,65 @@
     //cell.displayNameLabel.text = user.displayName;
     
     return cell;
+}
+
+
+#pragma mark - Actions (buttons)
+
+- (IBAction)joinButtonPressed:(id)sender {
+    
+    if(self.user.myEvent != nil) {
+    
+        UIAlertController * alert=   [UIAlertController
+                                      alertControllerWithTitle:@"You Are Already a member of Another Event"
+                                      message:@"if you click join you will leave the other event"
+                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+        UIAlertAction *join = [UIAlertAction
+                                 actionWithTitle:@"Join"
+                                 style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     
+                                     self.user.myEvent = self.event;
+                                     [self performSegueWithIdentifier:@"joinEventSegue" sender:self];
+                                     [alert dismissViewControllerAnimated:YES completion:nil];
+                                 
+                                 }];
+    
+        UIAlertAction *cancel = [UIAlertAction
+                                 actionWithTitle:@"Cancel"
+                                 style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction * action)
+                                 {
+                
+                                     [alert dismissViewControllerAnimated:YES completion:nil];
+                                 
+                                 }];
+    
+        [alert addAction:join];
+        [alert addAction:cancel];
+    
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    } else {
+    
+        self.user.myEvent = self.event;
+        [self performSegueWithIdentifier:@"joinEventSegue" sender:self];
+
+    }
+}
+
+#pragma mark - Segue
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([segue.identifier isEqualToString:@"showUserProfile2"]) {
+        
+        NSIndexPath *indexPath = [[self.membersCollectionView indexPathsForSelectedItems] firstObject];
+        UserProfileViewController *vc = segue.destinationViewController;
+        vc.user = self.members[indexPath.row];
+        vc.event = self.event;
+    }
 }
 
 @end
