@@ -54,7 +54,7 @@
 }
 
 - (void)getImageForProfile {
-    PFQuery *query = [PFQuery queryWithClassName:@"User"];
+    PFQuery *query = [User query];
     
     [query whereKey:@"username" equalTo:self.user.username];
     
