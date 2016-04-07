@@ -39,7 +39,7 @@
     }];
     
     self.eventTitleLabel.text = self.event.title;
-    self.destinationLabel.text = @"";
+    self.destinationLabel.text = self.event.destination;
     
     NSDateComponents *dobComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:self.event.date];
     

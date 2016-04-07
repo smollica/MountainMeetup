@@ -123,6 +123,7 @@
     
     newEvent.title = self.eventTitleTextField.text;
     newEvent.summary = self.eventDescriptionTextField.text;
+    newEvent.destination = self.destinationTextField.text;
     newEvent.date = self.eventDatePicker.date;
     newEvent.leader = self.user;
     newEvent.location = self.user.location;

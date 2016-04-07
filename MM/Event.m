@@ -12,6 +12,7 @@
 
 @dynamic title;
 @dynamic summary;
+@dynamic destination;
 @dynamic leader;
 @dynamic image;
 @dynamic date;

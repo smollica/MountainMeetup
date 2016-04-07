@@ -13,6 +13,7 @@
 
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSString *summary;
+@property (nonatomic) NSString *destination;
 @property (nonatomic) User *leader;
 @property (nonatomic) PFFile *image;
 @property (nonatomic) NSDate *date;
