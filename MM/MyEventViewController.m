@@ -23,6 +23,7 @@
 @property (nonatomic) Event *event;
 @property (nonatomic) NSMutableArray *members;
 @property (nonatomic) NSMutableArray *requests;
+@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
 
 @end
 
@@ -39,7 +40,7 @@
     
     if(self.event == nil) {
         
-        self.eventTitleLabel.text = @"Not a Member of Any Events";
+        //self.coverImageView.image = "add image"
         
     } else {
         
