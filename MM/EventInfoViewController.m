@@ -14,6 +14,9 @@
 @interface EventInfoViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *destinationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *membersCollectionView;
 @property (nonatomic) NSMutableArray *members;
 @property(nonatomic) User *user;
@@ -27,19 +30,29 @@
     
     self.user = (User*)[PFUser currentUser];
     
-    for (User *user in self.event.members) {
-        [self.members addObject:user];
-    }
+    self.members = [NSMutableArray new];
+    
+    PFRelation *relation = [self.event relationForKey:@"member"];
+    PFQuery *query = [relation query];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
+        self.members = [results mutableCopy];
+    }];
     
     self.eventTitleLabel.text = self.event.title;
-    //add other info
+    self.destinationLabel.text = @"";
+    
+    NSDateComponents *dobComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:self.event.date];
+    
+    self.dateLabel.text = [NSString stringWithFormat:@"%li / %li / %li", dobComponents.day, dobComponents.month, dobComponents.year];
+    
+    self.descriptionLabel.text = self.event.summary;
     
 }
 
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.event.members.count;
+    return self.members.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -49,7 +62,8 @@
     User *user = [self.members objectAtIndex:indexPath.item];
     
      [self getImageFor:user block:^(UIImage *image) {
-         cell.userImageView.image = image;
+         UsersCollectionViewCell *crazyCell = (UsersCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+         crazyCell.userImageView.image = image;
      }];
     
     cell.displayNameLabel.text = user.displayName;

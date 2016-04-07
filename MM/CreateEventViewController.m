@@ -117,7 +117,9 @@
     newEvent.date = self.eventDatePicker.date;
     newEvent.leader = self.user;
     newEvent.location = self.user.location;
-//    [newEvent.members addObject:self.user];
+    
+    PFRelation *relation = [newEvent relationForKey:@"members"];
+    [relation addObject:self.user];
     
     [newEvent saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (error) {
@@ -129,6 +131,7 @@
 //            [self performSegueWithIdentifier:@"createEventSegue" sender:self];
         }
     }];
+    
 }
 
 #pragma mark - Alert

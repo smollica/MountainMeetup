@@ -22,7 +22,6 @@
 		E57147231CB31A0800F5351B /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E57147221CB31A0800F5351B /* UserProfileViewController.m */; };
 		E57147261CB31A3700F5351B /* EventsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E57147251CB31A3700F5351B /* EventsListTableViewCell.m */; };
 		E57147291CB31A6000F5351B /* UsersCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E57147281CB31A6000F5351B /* UsersCollectionViewCell.m */; };
-		E57147371CB31C3A00F5351B /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E57147361CB31C3A00F5351B /* DataManager.m */; };
 		E5E2B97C1CB4374D0036B988 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = E5E2B97B1CB4374D0036B988 /* Event.m */; };
 		E5E2B97F1CB4386B0036B988 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = E5E2B97E1CB4386B0036B988 /* User.m */; };
 		E5E2B9821CB439DC0036B988 /* Request.m in Sources */ = {isa = PBXBuildFile; fileRef = E5E2B9811CB439DC0036B988 /* Request.m */; };
@@ -58,8 +57,6 @@
 		E57147251CB31A3700F5351B /* EventsListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsListTableViewCell.m; sourceTree = "<group>"; };
 		E57147271CB31A6000F5351B /* UsersCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersCollectionViewCell.h; sourceTree = "<group>"; };
 		E57147281CB31A6000F5351B /* UsersCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersCollectionViewCell.m; sourceTree = "<group>"; };
-		E57147351CB31C3A00F5351B /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
-		E57147361CB31C3A00F5351B /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		E5E2B97A1CB4374D0036B988 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		E5E2B97B1CB4374D0036B988 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		E5E2B97D1CB4386B0036B988 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -123,7 +120,6 @@
 			isa = PBXGroup;
 			children = (
 				E571470E1CB3192700F5351B /* UI */,
-				E57147331CB31BDF00F5351B /* DataManager */,
 				E571470D1CB3192100F5351B /* Controller */,
 				E57147341CB31BED00F5351B /* Views */,
 				E571470C1CB3191800F5351B /* Model */,
@@ -187,15 +183,6 @@
 			name = UI;
 			sourceTree = "<group>";
 		};
-		E57147331CB31BDF00F5351B /* DataManager */ = {
-			isa = PBXGroup;
-			children = (
-				E57147351CB31C3A00F5351B /* DataManager.h */,
-				E57147361CB31C3A00F5351B /* DataManager.m */,
-			);
-			name = DataManager;
-			sourceTree = "<group>";
-		};
 		E57147341CB31BED00F5351B /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -241,7 +228,7 @@
 				TargetAttributes = {
 					E57146F11CB30F7500F5351B = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 9WJCEPJG8Q;
+						DevelopmentTeam = KZR2N8785B;
 					};
 				};
 			};
@@ -330,7 +317,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E57147261CB31A3700F5351B /* EventsListTableViewCell.m in Sources */,
-				E57147371CB31C3A00F5351B /* DataManager.m in Sources */,
 				E57147231CB31A0800F5351B /* UserProfileViewController.m in Sources */,
 				E57146FA1CB30F7500F5351B /* AppDelegate.m in Sources */,
 				E571471A1CB319BD00F5351B /* MyEventViewController.m in Sources */,
@@ -460,7 +446,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = MM/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = n.smollica.MM;
+				PRODUCT_BUNDLE_IDENTIFIER = smollica.MM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -475,7 +461,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = MM/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = n.smollica.MM;
+				PRODUCT_BUNDLE_IDENTIFIER = smollica.MM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

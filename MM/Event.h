@@ -18,8 +18,6 @@
 @property (nonatomic) NSDate *date;
 @property (nonatomic) PFGeoPoint *location;
 @property (nonatomic) double distance;
-@property (nonatomic) NSMutableSet *members; //contains PFUsers
-@property (nonatomic) NSMutableSet *requests; //contains PFObjects
 
 + (NSString*)parseClassName;
 
