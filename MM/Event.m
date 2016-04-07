@@ -17,8 +17,6 @@
 @dynamic date;
 @dynamic location;
 @dynamic distance;
-@dynamic members;
-@dynamic requests;
 
 + (NSString*)parseClassName {
     return @"Event";

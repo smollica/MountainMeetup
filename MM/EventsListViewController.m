@@ -14,12 +14,14 @@
 #import <CoreLocation/CoreLocation.h>
 #import <Parse/Parse.h>
 
-@interface EventsListViewController () <CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchBarDelegate>
+@interface EventsListViewController () <CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 @property (nonatomic) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLLocation *lastLocation;
+@property (nonatomic, strong) CLLocation *currentLocation;
 @property (nonatomic) BOOL didInputLocation;
 @property (nonatomic) NSString *currentPostalCode;
 @property (nonatomic) NSMutableArray *localEvents;
+@property (nonatomic) NSArray *sortedLocalEvents;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchTextField;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -32,10 +34,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.localEvents = [NSMutableArray new];
+    self.sortedLocalEvents = [NSArray new];
     
     self.user = (User*)[PFUser currentUser];
+    self.user.myEvent = nil;
     
+    self.mapView.delegate = self;
     self.searchTextField.delegate = self;
+    self.didInputLocation = NO;
     
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
@@ -59,20 +66,21 @@
     
     [geo geocodeAddressString:self.searchTextField.text completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
         self.lastLocation = placemarks[0].location;
+        
+        PFGeoPoint *geoPoint = [PFGeoPoint new];
+        geoPoint.latitude = self.lastLocation.coordinate.latitude;
+        geoPoint.longitude = self.lastLocation.coordinate.longitude;
+        
+        [self fetchData:geoPoint];
+        
+        MKPointAnnotation *inputLocation = [[MKPointAnnotation alloc] init];
+        inputLocation.coordinate = self.lastLocation.coordinate;
+        [self.mapView addAnnotation:inputLocation];
     }];
     
-    PFGeoPoint *geoPoint = [PFGeoPoint new];
-    geoPoint.latitude = self.lastLocation.coordinate.latitude;
-    geoPoint.longitude = self.lastLocation.coordinate.longitude;
-    
-    [self fetchData:geoPoint];
-    
-    MKPointAnnotation *inputLocation = [[MKPointAnnotation alloc] init];
-    inputLocation.coordinate = self.lastLocation.coordinate;
-    [self.mapView addAnnotation:inputLocation];
+    [self.searchTextField resignFirstResponder];
     
 }
-
 
 #pragma mark - CLLocationManagerDelegate
 
@@ -96,6 +104,8 @@
             
             [geo reverseGeocodeLocation:currentLocation completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
                 
+                CLPlacemark *place = [placemarks objectAtIndex:0];
+                self.currentPostalCode = place.postalCode;
                 [self fetchData:self.user.location];
                 
             }];
@@ -116,15 +126,29 @@
                     [self.localEvents addObject:event];
                 }
             }
-            [self.tableView reloadData];
             
-            MKCoordinateSpan span = MKCoordinateSpanMake(0.05, 0.05);
-            MKCoordinateRegion region = MKCoordinateRegionMake(self.lastLocation.coordinate, span);
-            [self.mapView setRegion:region animated:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
             
+                [self.tableView reloadData];
+                
+                self.searchTextField.text = self.currentPostalCode;
+                
+                //[self.mapView addAnnotation:self.localEvents];
+                
+                NSSortDescriptor *sortByDistance = [NSSortDescriptor sortDescriptorWithKey:@"distance" ascending:YES];
+                self.sortedLocalEvents = [self.localEvents sortedArrayUsingDescriptors:@[sortByDistance]];
+                
+                MKCoordinateSpan span = MKCoordinateSpanMake(0.05, 0.05);
+                MKCoordinateRegion region = MKCoordinateRegionMake(self.lastLocation.coordinate, span);
+                [self.mapView setRegion:region animated:YES];
+                
+                });
         }];
+        
     } else {
+        
         [self fetchData:searchLocation];
+        
     }
 }
 
@@ -164,11 +188,13 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     EventsListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventCell" forIndexPath:indexPath];
+    cell.imageView.image = nil;
     
     Event *event = [self.localEvents objectAtIndex:indexPath.row];
     
     [self getImageFor:event block:^(UIImage *image) {
-        cell.eventImageView.image = image;
+        EventsListTableViewCell *crazyCell = [tableView cellForRowAtIndexPath:indexPath];
+        crazyCell.eventImageView.image = image;
     }];
     
     cell.eventTitleLabel.text =  event.title;
@@ -199,20 +225,21 @@
     }];
 }
 
+
+#pragma mark - UITableViewDelegate
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    [self performSegueWithIdentifier:@"showEventDetail" sender:self];
+}
+
 #pragma mark - Segue
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if([segue.identifier isEqualToString:@"tableViewSegue"]) {
+    if([segue.identifier isEqualToString:@"showEventDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         EventInfoViewController *vc = segue.destinationViewController;
         vc.event = self.localEvents[indexPath.row];
     }
-}
-
-#pragma mark - UITextFieldDelegate
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField {
-    return [textField resignFirstResponder];
 }
 
 @end

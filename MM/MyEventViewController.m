@@ -34,19 +34,26 @@
     self.user = (User*)[PFUser currentUser];
     self.event = self.user.myEvent;
     
+    self.members =  [NSMutableArray new];
+    self.requests =  [NSMutableArray new];
+    
     if(self.event == nil) {
         
         self.eventTitleLabel.text = @"Not a Member of Any Events";
         
     } else {
-    
-        for (User *user in self.event.members) {
-            [self.members addObject:user];
-        }
         
-        for (User *user in self.event.requests) {
-            [self.requests addObject:user];
-        }
+        PFRelation *relationM = [self.event relationForKey:@"member"];
+        PFQuery *queryM = [relationM query];
+        [queryM findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
+            self.members = [results mutableCopy];
+        }];
+        
+        PFRelation *relationR = [self.event relationForKey:@"requests"];
+        PFQuery *queryR = [relationR query];
+        [queryR findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
+            self.requests = [results mutableCopy];
+        }];
     }
 }
 
@@ -55,9 +62,9 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     if(collectionView == self.confirmedCollectionView) {
-        return self.event.members.count;
+        return self.members.count;
     } else {
-        return self.event.requests.count;
+        return self.requests.count;
     }
 }
 
@@ -70,7 +77,8 @@
             User *user = [self.members objectAtIndex:indexPath.item];
             
             [self getImageFor:user block:^(UIImage *image) {
-                cell.userImageView.image = image;
+                UsersCollectionViewCell *crazyCell = (UsersCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+                crazyCell.userImageView.image = image;
             }];
             
             cell.displayNameLabel.text = user.displayName;
@@ -85,6 +93,8 @@
             
             [self getImageFor:user block:^(UIImage *image) {
                 cell.userImageView.image = image;
+                UsersCollectionViewCell *crazyCell = (UsersCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+                crazyCell.userImageView.image = image;
             }];
             
             cell.displayNameLabel.text = user.displayName;

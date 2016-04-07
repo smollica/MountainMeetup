@@ -78,8 +78,9 @@
                                  [alert dismissViewControllerAnimated:YES completion:nil];
                              }];
     
-    [alert addAction:login];
     [alert addAction:cancel];
+    [alert addAction:login];
+
     
     [self presentViewController:alert animated:YES completion:nil];
 }
