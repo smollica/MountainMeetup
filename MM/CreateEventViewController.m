@@ -124,8 +124,13 @@
     newEvent.leader = self.user;
     newEvent.location = self.user.location;
     
-    PFRelation *relation = [newEvent relationForKey:@"members"];
-    [relation addObject:self.user];
+    PFRelation *relationM = [newEvent relationForKey:@"members"];
+    [relationM addObject:self.user];
+    
+    PFRelation *relationE = [self.user relationForKey:@"myEvent"];
+    [relationE addObject:newEvent];
+    
+    [self.user saveInBackground];
     
     self.createEventButton.alpha = 0.0;
     self.createEventButton.userInteractionEnabled = NO;

@@ -126,6 +126,7 @@
     if(self.user.location != nil) {
         [query whereKey:@"location" nearGeoPoint:searchLocation];
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            [self.localEvents removeAllObjects];
             for (Event *event in objects) {
                 if(self.user.location != nil) {
                     event.distance = [event.location distanceInKilometersTo:self.user.location];
@@ -162,7 +163,7 @@
         
     } else {
         
-        [self fetchData:searchLocation];
+        //[self fetchData:searchLocation];
         
     }
 }

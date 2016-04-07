@@ -50,6 +50,8 @@
     
         self.coverImageView.alpha = 0.0;
         
+        self.eventTitleLabel.text = self.event.title;
+        
         PFRelation *relationM = [self.event relationForKey:@"members"];
         PFQuery *queryM = [relationM query];
         [queryM findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {

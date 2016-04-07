@@ -36,6 +36,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     self.user = (User*)[PFUser currentUser];
+    
+    self.loadingIndicator.alpha = 0.0;
 
     PFRelation *relation = [self.event relationForKey:@"members"];
     
@@ -54,7 +56,7 @@
     
     self.descriptionLabel.text = self.event.summary;
     
-    if(self.user.myEvent == self.event) {
+    if([self.user.myEvent.objectId isEqualToString:self.event.objectId]) {
         self.joinEventButton.userInteractionEnabled = NO;
         self.joinEventButton.alpha = 0.0;
     }

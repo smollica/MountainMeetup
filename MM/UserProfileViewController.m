@@ -33,7 +33,7 @@
         self.user = me;
     }
     
-    if(self.user.myEvent.leader != me || self.user == me) {
+    if(![self.user.myEvent.leader.objectId isEqualToString:me.objectId] || [self.user.objectId isEqualToString:me.objectId]) {
         self.acceptButton.userInteractionEnabled = NO;
         self.acceptButton.alpha = 0.0;
         self.declineButton.userInteractionEnabled = NO;
