@@ -19,11 +19,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *confirmedCollectionView;
 @property (weak, nonatomic) IBOutlet UICollectionView *requestsCollectionView;
+@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
 @property (nonatomic) User *user;
 @property (nonatomic) Event *event;
 @property (nonatomic) NSMutableArray *members;
 @property (nonatomic) NSMutableArray *requests;
-@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
 
 @end
 
@@ -32,33 +32,39 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.user = (User*)[PFUser currentUser];
-    self.event = self.user.myEvent;
-    
     self.members =  [NSMutableArray new];
     self.requests =  [NSMutableArray new];
     
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    self.user = (User*)[PFUser currentUser];
+    self.event = self.user.myEvent;
+    
     if(self.event == nil) {
         
-        //self.coverImageView.image = "add image"
+        //self.coverImageView.image = [UIImage imageNamed:@"name"];<----add image here;
         self.coverImageView.alpha = 1.0;
         
     } else {
+    
+        self.coverImageView.alpha = 0.0;
         
-        PFRelation *relationM = [self.event relationForKey:@"member"];
+        PFRelation *relationM = [self.event relationForKey:@"members"];
         PFQuery *queryM = [relationM query];
         [queryM findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
             self.members = [results mutableCopy];
+            [self.confirmedCollectionView reloadData];
         }];
         
         PFRelation *relationR = [self.event relationForKey:@"requests"];
         PFQuery *queryR = [relationR query];
         [queryR findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
             self.requests = [results mutableCopy];
+            [self.requestsCollectionView reloadData];
         }];
     }
 }
-
 
 #pragma mark - UICollectionViewDataSource
 
@@ -72,9 +78,9 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-        if(collectionView == self.confirmedCollectionView) {
+    UsersCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"userCell" forIndexPath:indexPath];
     
-            UsersCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"userCell" forIndexPath:indexPath];
+        if(collectionView == self.confirmedCollectionView) {
             
             User *user = [self.members objectAtIndex:indexPath.item];
             
@@ -84,13 +90,10 @@
             }];
             
             cell.displayNameLabel.text = user.displayName;
-            
-            return cell;
+        
             
         } else {
-            
-            UsersCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"userCell" forIndexPath:indexPath];
-            
+        
             User *user = [self.requests objectAtIndex:indexPath.item];
             
             [self getImageFor:user block:^(UIImage *image) {
@@ -101,8 +104,9 @@
             
             cell.displayNameLabel.text = user.displayName;
             
-            return cell;
         }
+    
+    return cell;
 }
 
 - (void)getImageFor:(User*)user block:(void (^)(UIImage *image))completionBlock{
@@ -142,6 +146,7 @@
             Request *request = self.requests[indexPath.row];
             vc.user = request.creator;
             vc.event = self.event;
+            vc.request = request;
         }
  
     }

@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "User.h"
 #import "Event.h"
+#import "Request.h"
 
 @interface UserProfileViewController : UIViewController
 
 @property (nonatomic) User *user;
 @property (nonatomic) Event *event;
+@property (nonatomic) Request *request;
 
 @end

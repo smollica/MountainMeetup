@@ -23,7 +23,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
+}
+
+-(void)viewWillAppear:(BOOL)animated {
     User *me = (User*)[PFUser currentUser];
     
     if(self.user == nil) {
@@ -78,14 +81,52 @@
 #pragma mark - Actions (buttons)
 
 - (IBAction)acceptButtonPressed:(id)sender {
-    //handle acceptance locally and in Parse
+    PFRelation *relationM = [self.event relationForKey:@"members"];
+    [relationM addObject:self.user];
+    
+    PFRelation *relationR = [self.event relationForKey:@"requests"];
+    [relationR removeObject:self.user];
+    
+    [self.event saveInBackground];
+    
     self.acceptButton.userInteractionEnabled = NO;
     self.acceptButton.alpha = 0.0;
+    
+    [self createAlert:@"Request Accepted"];
 }
+
 - (IBAction)declineButtonPressed:(id)sender {
-    //handle decline locally and in Parse
+    PFRelation *relationR = [self.event relationForKey:@"requests"];
+    [relationR removeObject:self.user];
+    
+    [self.event saveInBackground];
+    
     self.declineButton.userInteractionEnabled = NO;
     self.declineButton.alpha = 0.0;
+    
+    [self createAlert:@"Request Declined"];
+}
+
+#pragma mark - Alert
+
+-(void)createAlert:(NSString*)message {
+    
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:message
+                                  message:@""
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *ok = [UIAlertAction
+                         actionWithTitle:@"OK"
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [alert dismissViewControllerAnimated:YES completion:nil];
+                         }];
+    
+    [alert addAction:ok];
+    
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end

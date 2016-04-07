@@ -10,6 +10,7 @@
 #import "UsersCollectionViewCell.h"
 #import "UserProfileViewController.h"
 #import "User.h"
+#import "Request.h"
 
 @interface EventInfoViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -18,8 +19,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *membersCollectionView;
-@property (nonatomic) NSMutableArray *members;
+@property (weak, nonatomic) IBOutlet UIButton *joinEventButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingIndicator;
 @property(nonatomic) User *user;
+@property (nonatomic) NSMutableArray *members;
 
 @end
 
@@ -28,14 +31,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.user = (User*)[PFUser currentUser];
-    
     self.members = [NSMutableArray new];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    self.user = (User*)[PFUser currentUser];
+
+    PFRelation *relation = [self.event relationForKey:@"members"];
     
-    PFRelation *relation = [self.event relationForKey:@"member"];
     PFQuery *query = [relation query];
     [query findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
         self.members = [results mutableCopy];
+        [self.membersCollectionView reloadData];
     }];
     
     self.eventTitleLabel.text = self.event.title;
@@ -47,6 +54,11 @@
     
     self.descriptionLabel.text = self.event.summary;
     
+    if(self.user.myEvent == self.event) {
+        self.joinEventButton.userInteractionEnabled = NO;
+        self.joinEventButton.alpha = 0.0;
+    }
+
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -96,9 +108,7 @@
 #pragma mark - Actions (buttons)
 
 - (IBAction)joinButtonPressed:(id)sender {
-    
     if(self.user.myEvent != nil) {
-    
         UIAlertController * alert=   [UIAlertController
                                       alertControllerWithTitle:@"You Are Already a member of Another Event"
                                       message:@"if you click join you will leave the other event"
@@ -109,11 +119,8 @@
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
-                                     
-                                     self.user.myEvent = self.event;
-                                     [self performSegueWithIdentifier:@"joinEventSegue" sender:self];
+                                     [self joinEvent];
                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                 
                                  }];
     
         UIAlertAction *cancel = [UIAlertAction
@@ -121,9 +128,7 @@
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
-                
                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                 
                                  }];
     
         [alert addAction:join];
@@ -132,18 +137,66 @@
         [self presentViewController:alert animated:YES completion:nil];
         
     } else {
-    
-        self.user.myEvent = self.event;
-        [self performSegueWithIdentifier:@"joinEventSegue" sender:self];
-
+        [self joinEvent];
     }
+}
+
+-(void)joinEvent {
+    self.user.myEvent = self.event;
+    
+    Request *newRequest = [Request new];
+    
+    newRequest.creator = self.user;
+    
+    PFRelation *relation = [newRequest relationForKey:@"requests"];
+    [relation addObject:self.user];
+    
+    self.joinEventButton.alpha = 0.0;
+    self.joinEventButton.userInteractionEnabled = NO;
+    
+    self.loadingIndicator.alpha = 1.0;
+    [self.loadingIndicator startAnimating];
+    
+    [newRequest saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Error: %@", error.localizedDescription);
+        } else {
+            NSLog(@"saved");
+            [self createRequestAlert];
+            
+            self.joinEventButton.alpha = 1.0;
+            self.loadingIndicator.alpha = 0.0;
+            [self.loadingIndicator stopAnimating];
+        }
+    }];
+}
+
+#pragma mark - Alert
+
+-(void)createRequestAlert {
+    
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:@"Request Created!"
+                                  message:@"congratulations"
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *ok = [UIAlertAction
+                         actionWithTitle:@"OK"
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [alert dismissViewControllerAnimated:YES completion:nil];
+                         }];
+    
+    [alert addAction:ok];
+    
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - Segue
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if([segue.identifier isEqualToString:@"showUserProfile2"]) {
-        
         NSIndexPath *indexPath = [[self.membersCollectionView indexPathsForSelectedItems] firstObject];
         UserProfileViewController *vc = segue.destinationViewController;
         vc.user = self.members[indexPath.row];

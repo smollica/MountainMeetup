@@ -22,6 +22,7 @@
 		E57147231CB31A0800F5351B /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E57147221CB31A0800F5351B /* UserProfileViewController.m */; };
 		E57147261CB31A3700F5351B /* EventsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E57147251CB31A3700F5351B /* EventsListTableViewCell.m */; };
 		E57147291CB31A6000F5351B /* UsersCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E57147281CB31A6000F5351B /* UsersCollectionViewCell.m */; };
+		E5BE19701CB6EBEB00D419FC /* LocationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BE196F1CB6EBEB00D419FC /* LocationAnnotation.swift */; };
 		E5E2B97C1CB4374D0036B988 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = E5E2B97B1CB4374D0036B988 /* Event.m */; };
 		E5E2B97F1CB4386B0036B988 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = E5E2B97E1CB4386B0036B988 /* User.m */; };
 		E5E2B9821CB439DC0036B988 /* Request.m in Sources */ = {isa = PBXBuildFile; fileRef = E5E2B9811CB439DC0036B988 /* Request.m */; };
@@ -57,6 +58,7 @@
 		E57147251CB31A3700F5351B /* EventsListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsListTableViewCell.m; sourceTree = "<group>"; };
 		E57147271CB31A6000F5351B /* UsersCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersCollectionViewCell.h; sourceTree = "<group>"; };
 		E57147281CB31A6000F5351B /* UsersCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersCollectionViewCell.m; sourceTree = "<group>"; };
+		E5BE196F1CB6EBEB00D419FC /* LocationAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationAnnotation.swift; sourceTree = "<group>"; };
 		E5E2B97A1CB4374D0036B988 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		E5E2B97B1CB4374D0036B988 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		E5E2B97D1CB4386B0036B988 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				E57147251CB31A3700F5351B /* EventsListTableViewCell.m */,
 				E57147271CB31A6000F5351B /* UsersCollectionViewCell.h */,
 				E57147281CB31A6000F5351B /* UsersCollectionViewCell.m */,
+				E5BE196F1CB6EBEB00D419FC /* LocationAnnotation.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -228,7 +231,7 @@
 				TargetAttributes = {
 					E57146F11CB30F7500F5351B = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 9WJCEPJG8Q;
+						DevelopmentTeam = KZR2N8785B;
 					};
 				};
 			};
@@ -330,6 +333,7 @@
 				E5E2B9821CB439DC0036B988 /* Request.m in Sources */,
 				E57147141CB3197C00F5351B /* SignUpViewController.m in Sources */,
 				E57147111CB3196F00F5351B /* HomeViewController.m in Sources */,
+				E5BE19701CB6EBEB00D419FC /* LocationAnnotation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,13 +446,15 @@
 			baseConfigurationReference = 3A99626E3FF0BA336E02F955 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = MM/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = n.smollica.MM;
+				PRODUCT_BUNDLE_IDENTIFIER = smollica.MM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -457,11 +463,12 @@
 			baseConfigurationReference = FB015882C5BDF1CEBE69921E /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = MM/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = n.smollica.MM;
+				PRODUCT_BUNDLE_IDENTIFIER = smollica.MM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

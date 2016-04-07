@@ -27,22 +27,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated {
     self.user = (User*)[PFUser currentUser];
     
-    self.eventImageView.backgroundColor = [UIColor grayColor];
     self.eventImageView.userInteractionEnabled = YES;
     
     self.eventTitleTextField.delegate = self;
     self.destinationTextField.delegate = self;
     self.eventDescriptionTextField.delegate = self;
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    self.createEventButton.alpha = 1.0;
-    self.createEventButton.userInteractionEnabled = YES;
     
     self.loadingIndicator.alpha = 0.0;
-    [self.loadingIndicator stopAnimating];
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -131,6 +127,12 @@
     PFRelation *relation = [newEvent relationForKey:@"members"];
     [relation addObject:self.user];
     
+    self.createEventButton.alpha = 0.0;
+    self.createEventButton.userInteractionEnabled = NO;
+    
+    self.loadingIndicator.alpha = 1.0;
+    [self.loadingIndicator startAnimating];
+    
     [newEvent saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (error) {
             NSLog(@"Error: %@", error.localizedDescription);
@@ -139,17 +141,11 @@
             self.user.myEvent = newEvent;
             [self createEventAlert];
             
-            self.createEventButton.alpha = 0.0;
-            self.createEventButton.userInteractionEnabled = NO;
-            
-            self.loadingIndicator.alpha = 1.0;
-            [self.loadingIndicator startAnimating];
-            
-            [self performSelector:@selector(viewDidAppear:) withObject:self afterDelay:3.0];
-//            [self performSegueWithIdentifier:@"createEventSegue" sender:self];
+            self.createEventButton.alpha = 1.0;
+            self.loadingIndicator.alpha = 0.0;
+            [self.loadingIndicator stopAnimating];
         }
     }];
-    
 }
 
 #pragma mark - Alert
@@ -172,15 +168,6 @@
     [alert addAction:ok];
     
     [self presentViewController:alert animated:YES completion:nil];
-}
-
-#pragma mark - Segue
-
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-//    if([segue.identifier isEqualToString:@"createEventSegue"]) {
-//        EventsListViewController *vc = segue.destinationViewController;
-//        vc.user = self.user;
-//    }
 }
 
 #pragma mark - UITextFieldDelegate

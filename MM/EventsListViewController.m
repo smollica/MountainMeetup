@@ -13,6 +13,7 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <Parse/Parse.h>
+#import "MM-Swift.h"
 
 @interface EventsListViewController () <CLLocationManagerDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 @property (nonatomic) CLLocationManager *locationManager;
@@ -39,12 +40,8 @@
     self.sortedLocalEvents = [NSArray new];
     self.localEventLocations = [NSMutableArray new];
     
-    self.user = (User*)[PFUser currentUser];
-    self.user.myEvent = nil;
-    
     self.mapView.delegate = self;
     self.searchTextField.delegate = self;
-    self.didInputLocation = NO;
     
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
@@ -52,9 +49,16 @@
     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
         [self.locationManager requestWhenInUseAuthorization];
     }
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    self.user = (User*)[PFUser currentUser];
     
     [self getCurrentLocation];
-
+    
+    self.didInputLocation = NO;
+    
+    [self fetchData:self.user.location];
 }
 
 #pragma mark - Actions (buttons)
@@ -75,7 +79,7 @@
         
         [self fetchData:geoPoint];
         
-        MKPointAnnotation *inputLocation = [[MKPointAnnotation alloc] init];
+        LocationAnnotation *inputLocation = [[LocationAnnotation alloc] init];
         inputLocation.coordinate = self.lastLocation.coordinate;
         [self.mapView addAnnotation:inputLocation];
     }];
@@ -124,14 +128,13 @@
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             for (Event *event in objects) {
                 if(self.user.location != nil) {
-                    event.distance = [event.location distanceInKilometersTo:self.user.location]/1000;
+                    event.distance = [event.location distanceInKilometersTo:self.user.location];
                     
                     // convert event location from pfgeopoint to cllocation
                     double lat = event.location.latitude;
                     double lon = event.location.longitude;
                     
                     CLLocation *eventLocation = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
-                    
                 
                     [self.localEventLocations addObject:eventLocation];
                     [self.localEvents addObject:event];
@@ -186,9 +189,14 @@
         pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"PlacePin"];
     }
     
-    pin.canShowCallout = NO;
-    pin.pinTintColor = [UIColor redColor];
-    
+    if ([annotation isKindOfClass:[LocationAnnotation class]]) {
+        pin.pinTintColor = [UIColor blueColor];
+        pin.canShowCallout = NO;
+    } else {
+        pin.pinTintColor = [UIColor redColor];
+        pin.canShowCallout = NO;
+    }
+
     return pin;
 }
 
@@ -236,7 +244,6 @@
         }];
     }];
 }
-
 
 #pragma mark - UITableViewDelegate
 

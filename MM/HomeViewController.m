@@ -11,6 +11,7 @@
 
 @interface HomeViewController ()
 
+@property (weak, nonatomic) IBOutlet UIImageView *homeImageView;
 @property (nonatomic) User *user;
 
 @end
@@ -19,6 +20,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //self.homeImageView.image = [UIImage imageNamed:@"name"];<----add image here;
     
 }
 
@@ -108,13 +111,7 @@
 #pragma mark - Segue
 
 -(IBAction)unwindFromSignUp:(UIStoryboardSegue*)unwindSegue {
-    //
-}
-
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if([segue.identifier isEqualToString:@"signInSegue"]) {
-        //
-    }
+    //returns to main page when hits cancel on signUpViewController
 }
 
 @end
