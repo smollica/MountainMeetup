@@ -42,6 +42,8 @@
     PFRelation *relation = [self.event relationForKey:@"members"];
     
     PFQuery *query = [relation query];
+    
+    [query includeKey:@"myEvent"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
         self.members = [results mutableCopy];
         [self.membersCollectionView reloadData];
@@ -194,6 +196,13 @@
     [alert addAction:ok];
     
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+
+#pragma mark - UICollectionViewDelegate
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [self performSegueWithIdentifier:@"showUserProfile2" sender:self];
 }
 
 #pragma mark - Segue

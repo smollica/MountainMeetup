@@ -121,14 +121,13 @@
     newEvent.summary = self.eventDescriptionTextField.text;
     newEvent.destination = self.destinationTextField.text;
     newEvent.date = self.eventDatePicker.date;
-    newEvent.leader = self.user;
     newEvent.location = self.user.location;
+    newEvent.leader = self.user.objectId;
     
     PFRelation *relationM = [newEvent relationForKey:@"members"];
     [relationM addObject:self.user];
     
-    PFRelation *relationE = [self.user relationForKey:@"myEvent"];
-    [relationE addObject:newEvent];
+    self.user.myEvent = newEvent;
     
     [self.user saveInBackground];
     

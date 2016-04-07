@@ -46,6 +46,26 @@
         //self.coverImageView.image = [UIImage imageNamed:@"name"];<----add image here;
         self.coverImageView.alpha = 1.0;
         
+        [self.user.myEvent fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+            self.coverImageView.alpha = 0.0;
+            
+            self.eventTitleLabel.text = self.event.title;
+            
+            PFRelation *relationM = [self.event relationForKey:@"members"];
+            PFQuery *queryM = [relationM query];
+            [queryM findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
+                self.members = [results mutableCopy];
+                [self.confirmedCollectionView reloadData];
+            }];
+            
+            PFRelation *relationR = [self.event relationForKey:@"requests"];
+            PFQuery *queryR = [relationR query];
+            [queryR findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
+                self.requests = [results mutableCopy];
+                [self.requestsCollectionView reloadData];
+            }];
+        }];
+        
     } else {
     
         self.coverImageView.alpha = 0.0;
@@ -133,6 +153,12 @@
     }];
 }
 
+#pragma mark - UICollectionViewDelegate
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [self performSegueWithIdentifier:@"showUserProfile" sender:self];
+}
+
 #pragma mark - Segue
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -153,5 +179,6 @@
  
     }
 }
+
 
 @end

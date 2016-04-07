@@ -17,6 +17,6 @@
 @property (nonatomic) NSDate *dob;
 @property (nonatomic) BOOL isDriving;
 @property (nonatomic) PFGeoPoint *location;
-@property (nonatomic, weak) Event *myEvent;
+@property (nonatomic) Event *myEvent;
 
 @end
