@@ -789,7 +789,7 @@
                                     <outlet property="delegate" destination="NSo-Le-g92" id="Trt-RZ-fc7"/>
                                 </connections>
                             </collectionView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="28j-gc-km0">
+                            <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="28j-gc-km0">
                                 <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                             </imageView>
                         </subviews>

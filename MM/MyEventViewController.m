@@ -41,6 +41,7 @@
     if(self.event == nil) {
         
         //self.coverImageView.image = "add image"
+        self.coverImageView.alpha = 1.0;
         
     } else {
         
