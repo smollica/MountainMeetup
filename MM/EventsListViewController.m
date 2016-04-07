@@ -22,6 +22,7 @@
 @property (nonatomic) NSString *currentPostalCode;
 @property (nonatomic) NSMutableArray *localEvents;
 @property (nonatomic) NSArray *sortedLocalEvents;
+@property (nonatomic) NSMutableArray *localEventLocations;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchTextField;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -36,6 +37,7 @@
     
     self.localEvents = [NSMutableArray new];
     self.sortedLocalEvents = [NSArray new];
+    self.localEventLocations = [NSMutableArray new];
     
     self.user = (User*)[PFUser currentUser];
     self.user.myEvent = nil;
@@ -123,6 +125,15 @@
             for (Event *event in objects) {
                 if(self.user.location != nil) {
                     event.distance = [event.location distanceInKilometersTo:self.user.location]/1000;
+                    
+                    // convert event location from pfgeopoint to cllocation
+                    double lat = event.location.latitude;
+                    double lon = event.location.longitude;
+                    
+                    CLLocation *eventLocation = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
+                    
+                
+                    [self.localEventLocations addObject:eventLocation];
                     [self.localEvents addObject:event];
                 }
             }
@@ -133,7 +144,8 @@
                 
                 self.searchTextField.text = self.currentPostalCode;
                 
-                //[self.mapView addAnnotation:self.localEvents];
+                NSArray *tempArray = [[NSArray alloc] initWithArray:self.localEventLocations];
+                [self.mapView addAnnotations:tempArray];
                 
                 NSSortDescriptor *sortByDistance = [NSSortDescriptor sortDescriptorWithKey:@"distance" ascending:YES];
                 self.sortedLocalEvents = [self.localEvents sortedArrayUsingDescriptors:@[sortByDistance]];
@@ -174,7 +186,7 @@
         pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"PlacePin"];
     }
     
-    pin.canShowCallout = YES;
+    pin.canShowCallout = NO;
     pin.pinTintColor = [UIColor redColor];
     
     return pin;
