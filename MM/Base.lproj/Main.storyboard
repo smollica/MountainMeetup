@@ -342,7 +342,6 @@
                         <outlet property="joinEventButton" destination="Jor-QY-jqy" id="k9x-op-OXa"/>
                         <outlet property="loadingIndicator" destination="072-Dd-Oty" id="L4I-LL-9AA"/>
                         <outlet property="membersCollectionView" destination="TzE-fb-Vgk" id="ILJ-kB-D5H"/>
-                        <outlet property="some" destination="072-Dd-Oty" id="r3I-8Y-DCa"/>
                         <segue destination="3Nh-NK-JM3" kind="show" identifier="showUserProfile2" id="a6R-iF-7PI"/>
                     </connections>
                 </viewController>
@@ -1016,7 +1015,7 @@
         <image name="profile" width="33" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="BHV-fg-tdW"/>
+        <segue reference="a6R-iF-7PI"/>
         <segue reference="nhA-dL-RIc"/>
     </inferredMetricsTieBreakers>
 </document>

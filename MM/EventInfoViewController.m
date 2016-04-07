@@ -58,6 +58,7 @@
         self.joinEventButton.userInteractionEnabled = NO;
         self.joinEventButton.alpha = 0.0;
     }
+    
 
 }
 
