@@ -44,6 +44,9 @@
     self.coverView.alpha = 1.0;
     self.noEventLabel.alpha = 1.0;
     
+//    [self.members removeAllObjects];
+    [self.requests removeAllObjects];
+    
     if(self.event != nil) {
 
         self.coverView.alpha = 0.0;
@@ -56,6 +59,7 @@
             PFRelation *relationM = [self.event relationForKey:@"members"];
             PFQuery *queryM = [relationM query];
             [queryM findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
+
                 self.members = [results mutableCopy];
                 [self.confirmedCollectionView reloadData];
             }];
@@ -63,20 +67,21 @@
             PFRelation *relationR = [self.event relationForKey:@"requests"];
             PFQuery *queryR = [relationR query];
             [queryR findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
-                for (Request *request in results) {
+              
+                for (User *request in results) {
                     PFQuery *query = [Request query];
                     
                     [query whereKey:@"objectId" equalTo:request.objectId];
+                    [query includeKey:@"creator"];
                     
                     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-                        Request* request = (Request*)object;
+                        Request *request = (Request*)object;
                         User *user = request.creator;
-                        [user fetchIfNeeded];
                         [self.requests addObject:user];
+                        [self.requestsCollectionView reloadData];
                     }];
                 }
-                
-                [self.requestsCollectionView reloadData];
+              [self.requestsCollectionView reloadData];
             }];
         }];
     }
@@ -123,8 +128,6 @@
             cell.displayNameLabel.text = user.displayName;
             
             return cell;
-
-            return cell;
         }
 }
 
@@ -168,10 +171,15 @@
         } else {
             NSIndexPath *indexPath = [[self.requestsCollectionView indexPathsForSelectedItems] firstObject];
             UserProfileViewController *vc = segue.destinationViewController;
-            Request *request = self.requests[indexPath.row];
-            vc.user = request.creator;
+            User *user = self.requests[indexPath.row];
+            vc.user = user;
             vc.event = self.event;
-            vc.request = request;
+            
+            PFRelation *relation = [self.event relationForKey:@"requests"];
+            PFQuery *query = [relation query];
+            [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+                vc.request = (Request*)object;
+            }];
         }
  
     }

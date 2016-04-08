@@ -91,9 +91,10 @@
     [relationM addObject:self.user];
     
     PFRelation *relationR = [self.event relationForKey:@"requests"];
-    [relationR removeObject:self.user];
+    [relationR removeObject:self.request];
     
     [self.event saveInBackground];
+    [self.request deleteInBackground];
     
     self.acceptButton.userInteractionEnabled = NO;
     self.acceptButton.alpha = 0.0;
@@ -103,9 +104,10 @@
 
 - (IBAction)declineButtonPressed:(id)sender {
     PFRelation *relationR = [self.event relationForKey:@"requests"];
-    [relationR removeObject:self.user];
+    [relationR removeObject:self.request];
     
     [self.event saveInBackground];
+    [self.request deleteInBackground];
     
     self.declineButton.userInteractionEnabled = NO;
     self.declineButton.alpha = 0.0;
