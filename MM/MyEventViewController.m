@@ -19,7 +19,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *confirmedCollectionView;
 @property (weak, nonatomic) IBOutlet UICollectionView *requestsCollectionView;
-@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
+@property (weak, nonatomic) IBOutlet UIView *coverView;
+@property (weak, nonatomic) IBOutlet UILabel *noEventLabel;
 @property (nonatomic) User *user;
 @property (nonatomic) Event *event;
 @property (nonatomic) NSMutableArray *members;
@@ -44,10 +45,12 @@
     if(self.event == nil) {
         
         //self.coverImageView.image = [UIImage imageNamed:@"name"];<----add image here;
-        self.coverImageView.alpha = 1.0;
+        self.coverView.alpha = 1.0;
+        self.noEventLabel.alpha = 1.0;
         
         [self.user.myEvent fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-            self.coverImageView.alpha = 0.0;
+            self.coverView.alpha = 0.0;
+            self.noEventLabel.alpha = 0.0;
             
             self.eventTitleLabel.text = self.event.title;
             
@@ -68,7 +71,8 @@
         
     } else {
     
-        self.coverImageView.alpha = 0.0;
+        self.coverView.alpha = 0.0;
+        self.noEventLabel.alpha = 0.0;
         
         self.eventTitleLabel.text = self.event.title;
         
