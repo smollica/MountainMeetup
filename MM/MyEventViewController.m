@@ -63,7 +63,19 @@
             PFRelation *relationR = [self.event relationForKey:@"requests"];
             PFQuery *queryR = [relationR query];
             [queryR findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
-                self.requests = [results mutableCopy];
+                for (Request *request in results) {
+                    PFQuery *query = [Request query];
+                    
+                    [query whereKey:@"objectId" equalTo:request.objectId];
+                    
+                    [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+                        Request* request = (Request*)object;
+                        User *user = request.creator;
+                        [user fetchIfNeeded];
+                        [self.requests addObject:user];
+                    }];
+                }
+                
                 [self.requestsCollectionView reloadData];
             }];
         }];
@@ -82,9 +94,9 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    UsersCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"userCell" forIndexPath:indexPath];
-    
         if(collectionView == self.confirmedCollectionView) {
+            
+            UsersCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"userCell" forIndexPath:indexPath];
             
             User *user = [self.members objectAtIndex:indexPath.item];
             
@@ -94,23 +106,26 @@
             }];
             
             cell.displayNameLabel.text = user.displayName;
-        
+            
+            return cell;
             
         } else {
+            
+            UsersCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"userCell2" forIndexPath:indexPath];
         
             User *user = [self.requests objectAtIndex:indexPath.item];
             
             [self getImageFor:user block:^(UIImage *image) {
-                cell.userImageView.image = image;
                 UsersCollectionViewCell *crazyCell = (UsersCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
                 crazyCell.userImageView.image = image;
             }];
             
             cell.displayNameLabel.text = user.displayName;
             
+            return cell;
+
+            return cell;
         }
-    
-    return cell;
 }
 
 - (void)getImageFor:(User*)user block:(void (^)(UIImage *image))completionBlock{

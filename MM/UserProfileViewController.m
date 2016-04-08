@@ -31,13 +31,19 @@
     
     if(self.user == nil) {
         self.user = me;
-    }
-    
-    [self.user.myEvent fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
         self.acceptButton.userInteractionEnabled = NO;
         self.acceptButton.alpha = 0.0;
         self.declineButton.userInteractionEnabled = NO;
         self.declineButton.alpha = 0.0;
+    }
+    
+    [self.user.myEvent fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        if([self.user.objectId isEqualToString:me.objectId] || ![self.user.myEvent.leader isEqualToString:me.objectId] || self.user.myEvent == nil) {
+            self.acceptButton.userInteractionEnabled = NO;
+            self.acceptButton.alpha = 0.0;
+            self.declineButton.userInteractionEnabled = NO;
+            self.declineButton.alpha = 0.0;
+        }
     }];
     
     [self getImageForProfile];

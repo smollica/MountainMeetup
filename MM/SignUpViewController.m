@@ -19,6 +19,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *introTextField;
 @property (weak, nonatomic) IBOutlet UIDatePicker *dobDatePicker;
 @property (weak, nonatomic) IBOutlet UISwitch *isDrivingSwitch;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingIndicator;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UIButton *createProfileButton;
 @property (nonatomic) User *user;
 
 @end
@@ -36,6 +39,7 @@
     self.emailTextField.delegate = self;
     self.introTextField.delegate = self;
     
+    self.loadingIndicator.alpha = 0.0;
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -106,6 +110,13 @@
     
     User *newUser = [User new];
     
+    self.loadingIndicator.alpha = 1.0;
+    [self.loadingIndicator startAnimating];
+    self.cancelButton.alpha = 0.0;
+    self.cancelButton.userInteractionEnabled = NO;
+    self.createProfileButton.alpha = 0.0;
+    self.createProfileButton.userInteractionEnabled = NO;
+
     UIImage *userImage = self.userImageView.image;
     NSData *userImageData = UIImageJPEGRepresentation(userImage, 0.9);
     
@@ -131,6 +142,12 @@
             self.user = newUser;
             [self performSegueWithIdentifier:@"createProfileSegue" sender:self];
         }
+        self.loadingIndicator.alpha = 0.0;
+        [self.loadingIndicator stopAnimating];
+        self.cancelButton.alpha = 1.0;
+        self.cancelButton.userInteractionEnabled = YES;
+        self.createProfileButton.alpha = 1.0;
+        self.createProfileButton.userInteractionEnabled = YES;
     }];
 }
 

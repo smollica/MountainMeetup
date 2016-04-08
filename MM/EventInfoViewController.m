@@ -153,9 +153,6 @@
     
     newRequest.creator = self.user;
     
-    PFRelation *relation = [newRequest relationForKey:@"requests"];
-    [relation addObject:self.user];
-    
     self.joinEventButton.alpha = 0.0;
     self.joinEventButton.userInteractionEnabled = NO;
     
@@ -172,6 +169,17 @@
             self.joinEventButton.alpha = 1.0;
             self.loadingIndicator.alpha = 0.0;
             [self.loadingIndicator stopAnimating];
+            
+            PFQuery *queryE = [Event query];
+            
+            [queryE whereKey:@"objectId" equalTo:self.event.objectId];
+            
+            [queryE getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                PFRelation *relationE = [object relationForKey:@"requests"];
+                [relationE addObject:newRequest];
+                [object saveInBackground];
+            }];
+        
         }
     }];
 }
