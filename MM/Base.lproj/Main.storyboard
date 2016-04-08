@@ -866,7 +866,9 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="confirmedCollectionView" destination="Xgj-Ah-Bb2" id="Eee-eU-rGD"/>
+                        <outlet property="coverView" destination="ys1-3e-Cff" id="oUC-03-x8V"/>
                         <outlet property="eventTitleLabel" destination="yUn-1W-kI4" id="Geq-uK-ZII"/>
+                        <outlet property="noEventLabel" destination="hce-Mm-xW4" id="aBu-LT-XXa"/>
                         <outlet property="requestsCollectionView" destination="cKH-R4-fFG" id="UI2-E3-FSF"/>
                         <segue destination="3Nh-NK-JM3" kind="show" identifier="showUserProfile" id="BLv-ij-rEe"/>
                     </connections>
@@ -1032,6 +1034,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="i13-2m-Q0C"/>
-        <segue reference="a6R-iF-7PI"/>
+        <segue reference="BLv-ij-rEe"/>
     </inferredMetricsTieBreakers>
 </document>

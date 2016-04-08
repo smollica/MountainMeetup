@@ -19,7 +19,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *confirmedCollectionView;
 @property (weak, nonatomic) IBOutlet UICollectionView *requestsCollectionView;
-@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
+@property (weak, nonatomic) IBOutlet UIView *coverView;
+@property (weak, nonatomic) IBOutlet UILabel *noEventLabel;
 @property (nonatomic) User *user;
 @property (nonatomic) Event *event;
 @property (nonatomic) NSMutableArray *members;
