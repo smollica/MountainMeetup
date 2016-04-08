@@ -106,7 +106,40 @@
 }
 
 - (IBAction)createEventButton:(id)sender {
-    
+    if(self.user.myEvent != nil) {
+        UIAlertController * alert=   [UIAlertController
+                                      alertControllerWithTitle:@"You Are Already a Member of Another Event"
+                                      message:@"if you click create an event you will leave the other event\n if you are the leader of that event the event will be terminated"
+                                      preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cancel = [UIAlertAction
+                                 actionWithTitle:@"Cancel"
+                                 style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     [alert dismissViewControllerAnimated:YES completion:nil];
+                                 }];
+        
+        UIAlertAction *join = [UIAlertAction
+                               actionWithTitle:@"Create"
+                               style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction * action)
+                               {
+                                   [self deleteOldEvent];
+                                   [alert dismissViewControllerAnimated:YES completion:nil];
+                               }];
+
+        [alert addAction:cancel];
+        [alert addAction:join];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    } else {
+        [self createEvent];
+    }
+}
+
+-(void)createEvent {
     Event *newEvent = [Event new];
     
     UIImage *eventImage = self.eventImageView.image;
@@ -152,10 +185,38 @@
     }];
 }
 
+-(void)deleteOldEvent {
+    if([self.user.myEvent.leader isEqualToString:self.user.objectId]) {
+        PFQuery *queryE = [Event query];
+        
+        [queryE whereKey:@"objectId" equalTo:self.user.myEvent.objectId];
+        
+        [queryE getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+            
+            PFQuery *queryU = [User query];
+            
+            [queryU whereKey:@"myEvent" equalTo:self.user.myEvent];
+            
+            [queryU findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+                for (User *user in objects) {
+                    user.myEvent = nil;
+                    [user saveInBackground];
+                }
+                
+                [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                    [self createEvent];
+                }];
+                
+            }];
+        }];
+    } else {
+        [self createEvent];
+    }
+}
+
 #pragma mark - Alert
 
 -(void)createEventAlert {
-
     UIAlertController * alert=   [UIAlertController
                                   alertControllerWithTitle:@"Event Created!"
                                   message:@"congratulations"

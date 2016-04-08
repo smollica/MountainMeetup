@@ -33,24 +33,12 @@
         self.user = me;
     }
     
-    if(self.user.myEvent == nil) {
-        
-        [self.user.myEvent fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-            self.acceptButton.userInteractionEnabled = NO;
-            self.acceptButton.alpha = 0.0;
-            self.declineButton.userInteractionEnabled = NO;
-            self.declineButton.alpha = 0.0;
-        }];
-        
-    } else {
-    
-        if(![self.user.myEvent.leader isEqualToString:me.objectId] || [self.user.objectId isEqualToString:me.objectId]) {
-            self.acceptButton.userInteractionEnabled = NO;
-            self.acceptButton.alpha = 0.0;
-            self.declineButton.userInteractionEnabled = NO;
-            self.declineButton.alpha = 0.0;
-        }
-    }
+    [self.user.myEvent fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        self.acceptButton.userInteractionEnabled = NO;
+        self.acceptButton.alpha = 0.0;
+        self.declineButton.userInteractionEnabled = NO;
+        self.declineButton.alpha = 0.0;
+    }];
     
     [self getImageForProfile];
     self.displayNameLabel.text = self.user.displayName;

@@ -46,6 +46,14 @@
          textField.secureTextEntry = YES;
      }];
     
+    UIAlertAction* cancel = [UIAlertAction
+                             actionWithTitle:@"Cancel"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [alert dismissViewControllerAnimated:YES completion:nil];
+                             }];
+    
     UIAlertAction *login = [UIAlertAction
                             actionWithTitle:@"Log In"
                                style:UIAlertActionStyleDefault
@@ -72,14 +80,6 @@
                                        [alert dismissViewControllerAnimated:YES completion:nil];
                                    }
                                }];
-    
-    UIAlertAction* cancel = [UIAlertAction
-                             actionWithTitle:@"Cancel"
-                             style:UIAlertActionStyleDefault
-                             handler:^(UIAlertAction * action)
-                             {
-                                 [alert dismissViewControllerAnimated:YES completion:nil];
-                             }];
     
     [alert addAction:cancel];
     [alert addAction:login];

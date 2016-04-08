@@ -40,15 +40,14 @@
 -(void)viewWillAppear:(BOOL)animated {
     self.user = (User*)[PFUser currentUser];
     self.event = self.user.myEvent;
+    self.coverImageView.alpha = 1.0;
     
-    if(self.event == nil) {
+    if(self.event != nil) {
+
+        self.coverImageView.alpha = 0.0;
         
-        //self.coverImageView.image = [UIImage imageNamed:@"name"];<----add image here;
-        self.coverImageView.alpha = 1.0;
-        
-        [self.user.myEvent fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-            self.coverImageView.alpha = 0.0;
-            
+        [self.event fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+
             self.eventTitleLabel.text = self.event.title;
             
             PFRelation *relationM = [self.event relationForKey:@"members"];
@@ -64,26 +63,6 @@
                 self.requests = [results mutableCopy];
                 [self.requestsCollectionView reloadData];
             }];
-        }];
-        
-    } else {
-    
-        self.coverImageView.alpha = 0.0;
-        
-        self.eventTitleLabel.text = self.event.title;
-        
-        PFRelation *relationM = [self.event relationForKey:@"members"];
-        PFQuery *queryM = [relationM query];
-        [queryM findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
-            self.members = [results mutableCopy];
-            [self.confirmedCollectionView reloadData];
-        }];
-        
-        PFRelation *relationR = [self.event relationForKey:@"requests"];
-        PFQuery *queryR = [relationR query];
-        [queryR findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
-            self.requests = [results mutableCopy];
-            [self.requestsCollectionView reloadData];
         }];
     }
 }

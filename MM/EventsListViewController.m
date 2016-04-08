@@ -227,7 +227,7 @@
 - (void)getImageFor:(Event*)event block:(void (^)(UIImage *image))completionBlock{
     PFQuery *query = [Event query];
     
-    [query whereKey:@"title" equalTo:event.title];
+    [query whereKey:@"objectId" equalTo:event.objectId];
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         if (!object) {

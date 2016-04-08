@@ -115,19 +115,10 @@
 - (IBAction)joinButtonPressed:(id)sender {
     if(self.user.myEvent != nil) {
         UIAlertController * alert=   [UIAlertController
-                                      alertControllerWithTitle:@"You Are Already a member of Another Event"
-                                      message:@"if you click join you will leave the other event"
+                                      alertControllerWithTitle:@"You Are Already a Member of Another Event"
+                                      message:@"if you click create an event you will leave the other event\n if you are the leader of that event the event will be terminated"
                                       preferredStyle:UIAlertControllerStyleAlert];
-    
-        UIAlertAction *join = [UIAlertAction
-                                 actionWithTitle:@"Join"
-                                 style:UIAlertActionStyleDefault
-                                 handler:^(UIAlertAction * action)
-                                 {
-                                     [self joinEvent];
-                                     [alert dismissViewControllerAnimated:YES completion:nil];
-                                 }];
-    
+        
         UIAlertAction *cancel = [UIAlertAction
                                  actionWithTitle:@"Cancel"
                                  style:UIAlertActionStyleDefault
@@ -135,9 +126,18 @@
                                  {
                                      [alert dismissViewControllerAnimated:YES completion:nil];
                                  }];
-    
-        [alert addAction:join];
+        
+        UIAlertAction *join = [UIAlertAction
+                                 actionWithTitle:@"Join"
+                                 style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     [self deleteOldEvent];
+                                     [alert dismissViewControllerAnimated:YES completion:nil];
+                                 }];
+        
         [alert addAction:cancel];
+        [alert addAction:join];
     
         [self presentViewController:alert animated:YES completion:nil];
         
@@ -174,6 +174,35 @@
             [self.loadingIndicator stopAnimating];
         }
     }];
+}
+
+-(void)deleteOldEvent {
+    if([self.user.myEvent.leader isEqualToString:self.user.objectId]) {
+        PFQuery *queryE = [Event query];
+        
+        [queryE whereKey:@"objectId" equalTo:self.user.myEvent.objectId];
+        
+        [queryE getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+            
+            PFQuery *queryU = [User query];
+            
+            [queryU whereKey:@"myEvent" equalTo:self.user.myEvent];
+            
+            [queryU findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+                for (User *user in objects) {
+                    user.myEvent = nil;
+                    [user saveInBackground];
+                }
+                
+                [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                    [self joinEvent];
+                }];
+                
+            }];
+        }];
+    } else {
+        [self joinEvent];
+    }
 }
 
 #pragma mark - Alert
