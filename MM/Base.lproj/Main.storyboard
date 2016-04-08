@@ -467,7 +467,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Auz-kk-BHc">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera" translatesAutoresizingMaskIntoConstraints="NO" id="Auz-kk-BHc">
                                 <rect key="frame" x="20" y="40" width="140" height="140"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -909,17 +909,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="b8r-2u-iGp">
-                                <rect key="frame" x="0.0" y="20" width="320" height="100"/>
-                                <color key="backgroundColor" red="0.58823529411764708" green="0.77254901960784317" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
-                                <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="WGh-Ft-1qW"/>
-                                </constraints>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="K5o-1z-Khv" appends="YES" id="Iq5-YK-Eig"/>
-                                </connections>
-                            </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="DESTINATION" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yoI-9O-X08">
                                 <rect key="frame" x="36" y="200" width="248" height="30"/>
                                 <color key="backgroundColor" red="0.86274509803921573" green="0.94117647058823528" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
@@ -968,6 +957,17 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Ewd-5I-6sc">
                                 <rect key="frame" x="150" y="485" width="20" height="20"/>
                             </activityIndicatorView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera" translatesAutoresizingMaskIntoConstraints="NO" id="b8r-2u-iGp">
+                                <rect key="frame" x="0.0" y="20" width="320" height="100"/>
+                                <color key="backgroundColor" red="0.58823529411764708" green="0.77254901960784317" blue="0.8784313725490196" alpha="0.0" colorSpace="calibratedRGB"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="WGh-Ft-1qW"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="K5o-1z-Khv" appends="YES" id="Iq5-YK-Eig"/>
+                                </connections>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.65098039215686276" green="0.81568627450980391" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -1023,6 +1023,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="camera" width="256" height="256"/>
         <image name="create_event" width="30" height="29"/>
         <image name="home" width="30" height="32"/>
         <image name="logo" width="365" height="368"/>
@@ -1030,7 +1031,7 @@
         <image name="profile" width="33" height="28"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="nhA-dL-RIc"/>
+        <segue reference="i13-2m-Q0C"/>
         <segue reference="a6R-iF-7PI"/>
     </inferredMetricsTieBreakers>
 </document>
