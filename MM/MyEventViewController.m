@@ -41,11 +41,13 @@
 -(void)viewWillAppear:(BOOL)animated {
     self.user = (User*)[PFUser currentUser];
     self.event = self.user.myEvent;
-    self.coverImageView.alpha = 1.0;
+    self.coverView.alpha = 1.0;
+    self.noEventLabel.alpha = 1.0;
     
     if(self.event != nil) {
 
-        self.coverImageView.alpha = 0.0;
+        self.coverView.alpha = 0.0;
+        self.noEventLabel.alpha = 0.0;
         
         [self.event fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
 
