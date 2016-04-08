@@ -153,7 +153,7 @@
 #pragma mark - UICollectionViewDelegate
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [self performSegueWithIdentifier:@"showUserProfile" sender:self];
+    [self performSegueWithIdentifier:@"showUserProfile" sender:collectionView];
 }
 
 #pragma mark - Segue
